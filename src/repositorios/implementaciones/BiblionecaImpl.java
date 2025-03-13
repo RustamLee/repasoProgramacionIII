@@ -1,12 +1,11 @@
 package repositorios.implementaciones;
 
-import excepciones.IdentificadorDuplicadoException;
-import excepciones.IdentificadorNoEncontrado;
+import excepciones.IdDuplicadoException;
+import excepciones.IdNoEncontradoException;
 import modelo.Media;
 import modelo.enumeraciones.Genero;
 import repositorios.interfaces.IBiblioteca;
 
-import javax.swing.*;
 import java.util.*;
 
 public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
@@ -16,18 +15,20 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
         this.colleccion = new HashMap<>();
     }
 
+
+
     @Override
-    public void agregar(T item) throws IdentificadorDuplicadoException {
+    public void agregar(T item) throws IdDuplicadoException {
         if (colleccion.containsKey(String.valueOf(item.getId()))) {
-            throw new IdentificadorDuplicadoException("El identificador " + item.getId() + " ya está en uso.");
+            throw new IdDuplicadoException("El identificador " + item.getId() + " ya está en uso.");
         }
         colleccion.put(String.valueOf(item.getId()), item);
     }
 
     @Override
-    public void eliminar(String id) throws IdentificadorNoEncontrado {
+    public void eliminar(String id) throws IdNoEncontradoException {
         if(!colleccion.containsKey(id)){
-            throw new IdentificadorNoEncontrado("Item con "+ id + " no encontrado! ");
+            throw new IdNoEncontradoException("Item con "+ id + " no encontrado! ");
         }
         colleccion.remove(id);
     }
@@ -57,7 +58,7 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
         Scanner scanner = new Scanner(System.in);
         T item = colleccion.get(id);
         if(item==null){
-            throw new IdentificadorNoEncontrado("Error, el item con id = "+id+" no encontrado!" );
+            throw new IdNoEncontradoException("Error, el item con id = "+id+" no encontrado!" );
         }
         modificarMenu();
         String option = scanner.nextLine();
