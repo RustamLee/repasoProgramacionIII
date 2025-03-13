@@ -2,6 +2,7 @@ package repositorios.implementaciones;
 
 import excepciones.IdDuplicadoException;
 import excepciones.IdNoEncontradoException;
+import modelo.InputHelper;
 import modelo.Media;
 import modelo.enumeraciones.Genero;
 import repositorios.interfaces.IBiblioteca;
@@ -26,11 +27,14 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
     }
 
     @Override
-    public void eliminar(String id) throws IdNoEncontradoException {
-        if(!colleccion.containsKey(id)){
-            throw new IdNoEncontradoException("Item con "+ id + " no encontrado! ");
+    public void eliminar() throws IdNoEncontradoException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese un id de juego o expancion para eliminar:");
+        String idEliminar = scanner.nextLine();
+        if(!colleccion.containsKey(idEliminar)){
+            throw new IdNoEncontradoException("Item con "+ idEliminar + " no encontrado! ");
         }
-        colleccion.remove(id);
+        colleccion.remove(idEliminar);
     }
 
     @Override
@@ -43,8 +47,18 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
     }
 
     @Override
-    public List<T> filtrar (Genero genero){
-        List<T> listaFiltrada = new ArrayList<>(colleccion.values());
+    public List<T> filtrar (Scanner sc){
+        List<T> listaFiltrada = new ArrayList<>();
+        System.out.println("Ingrese el genero para filtrar (ACCION /AVENTURA /FANTASIA): ");
+        String generoInput = sc.nextLine().toUpperCase();
+        Genero genero;
+        try {
+            genero = Genero.valueOf(generoInput);
+            System.out.println("Genero actualizado!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: Genero no encontrado!");
+            return new ArrayList<>();
+        }
         for(T item: colleccion.values()){
             if(Objects.equals(item.getGenero(),genero)){
                 listaFiltrada.add(item);
@@ -54,8 +68,9 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
     }
 
     @Override
-    public void modificar (String id, String atributoNuevo){
-        Scanner scanner = new Scanner(System.in);
+    public void modificar (Scanner scanner){
+        System.out.println("Ingrese id de elemento para modificar");
+        String id = scanner.nextLine();
         T item = colleccion.get(id);
         if(item==null){
             throw new IdNoEncontradoException("Error, el item con id = "+id+" no encontrado!" );
@@ -64,16 +79,19 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
         String option = scanner.nextLine();
         switch (option) {
             case "1":
-                item.setTitulo(atributoNuevo);
+                String titulo = InputHelper.inputParamento("titulo");
+                item.setTitulo(titulo);
                 System.out.println("Titulo actualizado!");
                 break;
             case "2":
-                item.setCreador(atributoNuevo);
+                String creador = InputHelper.inputParamento("creador");
+                item.setCreador(creador);
                 System.out.println("Creador actualizado!");
                 break;
             case "3":
                 try {
-                    Genero nuevoGenero = Genero.valueOf(atributoNuevo.toUpperCase());
+                    String generoInput = InputHelper.inputParamento("genero");
+                    Genero nuevoGenero = Genero.valueOf(generoInput.toUpperCase());
                     item.setGenero(nuevoGenero);
                     System.out.println("Genero actualizado!");
                 } catch (IllegalArgumentException e) {
