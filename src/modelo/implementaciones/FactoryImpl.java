@@ -1,5 +1,6 @@
 package modelo.implementaciones;
 
+import modelo.InputHelper;
 import modelo.enumeraciones.Genero;
 import modelo.interfaces.FactoryBase;
 
@@ -14,10 +15,8 @@ public class FactoryImpl implements FactoryBase {
     public JuegoImpl crearJuego() {
         // String creador, String titulo, Genero genero, double numeroVersion
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese el nombre de creador: ");
-        String creador = scanner.nextLine();
-        System.out.println("Ingrese el titulo: ");
-        String titulo = scanner.nextLine();
+        String creador = InputHelper.input(" el nombre de creador");
+        String titulo = InputHelper.input("el titulo");
         System.out.println("Ingrese el genero (Accion, Aventura o Fantasia):");
         String generoInput = scanner.nextLine().toUpperCase();
         Genero generoNuevo;
@@ -33,6 +32,7 @@ public class FactoryImpl implements FactoryBase {
             scanner.nextLine();
         }
         double numeroVersion = scanner.nextDouble();
+        System.out.println("Juego esta creando! ");
         return new JuegoImpl(creador,titulo,generoNuevo,numeroVersion);
     }
 
@@ -41,12 +41,8 @@ public class FactoryImpl implements FactoryBase {
         // String creador, String titulo, Genero genero
         // LocalDateTime fechaLanzamiento - utilizar la fecha actual
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese el numero de creador: ");
-        String creador = scanner.nextLine();
-
-        System.out.println("Ingrese el titulo: ");
-        String titulo = scanner.nextLine();
-
+        String creador = InputHelper.input("el nombre de creador");
+        String titulo = InputHelper.input("el titulo");
         Genero generoNuevo;
         System.out.println("Ingrese el genero (Accion, Aventura o Fantasia):");
         String generoInput = scanner.nextLine().toUpperCase();
@@ -56,6 +52,7 @@ public class FactoryImpl implements FactoryBase {
             System.out.println("El genero "+generoInput+" no encontrado!");
             return null;
         }
+        System.out.println("Expancion esta creando! ");
         return new ExpancionImpl(creador,titulo,generoNuevo,LocalDateTime.now());
     }
 }

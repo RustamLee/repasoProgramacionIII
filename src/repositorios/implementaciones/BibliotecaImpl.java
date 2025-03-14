@@ -5,14 +5,14 @@ import excepciones.IdNoEncontradoException;
 import modelo.InputHelper;
 import modelo.Media;
 import modelo.enumeraciones.Genero;
-import repositorios.interfaces.IBiblioteca;
+import repositorios.interfaces.BibliotecaBase;
 
 import java.util.*;
 
-public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
+public class BibliotecaImpl<T extends Media> implements BibliotecaBase<T> {
     private Map<String, T>  colleccion;
 
-    public BiblionecaImpl (){
+    public BibliotecaImpl(){
         this.colleccion = new HashMap<>();
     }
 
@@ -27,23 +27,26 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
     }
 
     @Override
-    public void eliminar() throws IdNoEncontradoException {
-        Scanner scanner = new Scanner(System.in);
+    public void eliminar(Scanner scanner) throws IdNoEncontradoException {
         System.out.println("Ingrese un id de juego o expancion para eliminar:");
         String idEliminar = scanner.nextLine();
         if(!colleccion.containsKey(idEliminar)){
-            throw new IdNoEncontradoException("Item con "+ idEliminar + " no encontrado! ");
+            throw new IdNoEncontradoException("Item con id= "+ idEliminar + " no encontrado! ");
+        } else{
+            System.out.println("Elemento esta eliminado! ");
+            colleccion.remove(idEliminar);
         }
-        colleccion.remove(idEliminar);
     }
 
     @Override
     public void mostrar() {
         List<T> colleccionOrdenada = new ArrayList<>(colleccion.values());
         Collections.sort(colleccionOrdenada);
-        for(T i: colleccionOrdenada){
-            System.out.println(i);
-        }
+        if (!colleccionOrdenada.isEmpty()){
+            for(T i: colleccionOrdenada){
+                System.out.println(i);
+            }
+        } else {System.out.println("Colleccion esta vacia!");}
     }
 
     @Override
@@ -54,7 +57,6 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
         Genero genero;
         try {
             genero = Genero.valueOf(generoInput);
-            System.out.println("Genero actualizado!");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: Genero no encontrado!");
             return new ArrayList<>();
@@ -79,18 +81,18 @@ public class BiblionecaImpl<T extends Media> implements IBiblioteca<T> {
         String option = scanner.nextLine();
         switch (option) {
             case "1":
-                String titulo = InputHelper.inputParamento("titulo");
+                String titulo = InputHelper.input("titulo");
                 item.setTitulo(titulo);
                 System.out.println("Titulo actualizado!");
                 break;
             case "2":
-                String creador = InputHelper.inputParamento("creador");
+                String creador = InputHelper.input("creador");
                 item.setCreador(creador);
                 System.out.println("Creador actualizado!");
                 break;
             case "3":
                 try {
-                    String generoInput = InputHelper.inputParamento("genero");
+                    String generoInput = InputHelper.input("genero");
                     Genero nuevoGenero = Genero.valueOf(generoInput.toUpperCase());
                     item.setGenero(nuevoGenero);
                     System.out.println("Genero actualizado!");
