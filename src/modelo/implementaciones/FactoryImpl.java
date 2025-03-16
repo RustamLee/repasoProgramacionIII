@@ -38,8 +38,6 @@ public class FactoryImpl implements FactoryBase {
 
     @Override
     public ExpancionImpl crearExpancion() {
-        // String creador, String titulo, Genero genero
-        // LocalDateTime fechaLanzamiento - utilizar la fecha actual
         Scanner scanner = new Scanner(System.in);
         String creador = InputHelper.input("el nombre de creador");
         String titulo = InputHelper.input("el titulo");
@@ -53,6 +51,6 @@ public class FactoryImpl implements FactoryBase {
             return null;
         }
         System.out.println("Expancion esta creando! ");
-        return new ExpancionImpl(creador,titulo,generoNuevo,LocalDateTime.now());
+        return new ExpancionImpl(creador,titulo,generoNuevo);
     }
 }

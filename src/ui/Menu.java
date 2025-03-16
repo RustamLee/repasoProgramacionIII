@@ -17,10 +17,20 @@ public class Menu {
     FactoryBase factory;
 
     public Menu(){
-        this.biblioteca = new BibliotecaImpl<>();
+        this.biblioteca = new BibliotecaImpl<>(Media.class);
+        this.biblioteca = new BibliotecaImpl<>(Media.class);
         this.factory = new FactoryImpl();
     }
-    public void menu() {
+
+    public BibliotecaBase<Media> getBiblioteca() {
+        return biblioteca;
+    }
+
+    public void setBiblioteca(BibliotecaBase<Media> biblioteca) {
+        this.biblioteca = biblioteca;
+    }
+
+    public void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         int option = 0;
         do {

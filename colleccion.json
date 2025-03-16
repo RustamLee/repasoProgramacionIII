@@ -1,0 +1,17 @@
+{
+  "1": {
+    "numeroVersion": 100.0,
+    "type": "juego",
+    "id": 1,
+    "titulo": "Mario",
+    "creador": "Rustam",
+    "genero": "ACCION"
+  },
+  "2": {
+    "type": "expansion",
+    "id": 2,
+    "titulo": "Need for speed",
+    "creador": "Anna",
+    "genero": "AVENTURA"
+  }
+}

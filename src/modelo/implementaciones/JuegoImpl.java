@@ -6,6 +6,7 @@ import modelo.interfaces.JuegoBase;
 
 public class JuegoImpl extends Media implements JuegoBase {
     private double numeroVersion;
+    public String type = "juego";
     public JuegoImpl(String creador, String titulo, Genero genero, double numeroVersion) {
         super(creador, titulo, genero);
         if(numeroVersion <=0){
